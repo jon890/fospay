@@ -1,5 +1,16 @@
-plugins {
-    id("org.gradle.toolchains.foojay-resolver-convention") version "0.5.0"
+pluginManagement {
+    val kotlinVersion: String by settings
+
+    resolutionStrategy {
+        eachPlugin {
+            when (requested.id.id) {
+                "org.jetbrains.kotlin.jvm",
+                "org.jetbrains.kotlin.plugin.spring",
+                "org.jetbrains.kotlin.plugin.jpa" -> useVersion(kotlinVersion)
+            }
+        }
+    }
 }
+
 rootProject.name = "fospay"
 include("membership-service")

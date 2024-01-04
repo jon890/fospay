@@ -2,7 +2,7 @@ package com.bifos.fospay.membership.domain
 
 // 오염 되면 안되는 클래스, 고객 정보, 핵심 도메인
 class Membership private constructor(
-    val id: String,
+    val id: Long,
     val name: String,
     val email: String,
     val address: String,
@@ -11,9 +11,12 @@ class Membership private constructor(
 ) {
     companion object {
         fun generate(
-            membershipId: MembershipId, membershipName: MembershipName,
-            membershipEmail: MembershipEmail, membershipAddress: MembershipAddress,
-            membershipIsValid: MembershipIsValid, membershipIsCorp: MembershipIsCorp
+            membershipId: MembershipId,
+            membershipName: MembershipName,
+            membershipEmail: MembershipEmail,
+            membershipAddress: MembershipAddress,
+            membershipIsValid: MembershipIsValid,
+            membershipIsCorp: MembershipIsCorp
         ): Membership {
             return Membership(
                 membershipId.id,
@@ -27,7 +30,7 @@ class Membership private constructor(
     }
 
     class MembershipId(
-        val id: String
+        val id: Long
     )
 
     class MembershipName(
