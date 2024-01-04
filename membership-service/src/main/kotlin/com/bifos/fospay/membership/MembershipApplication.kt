@@ -1,11 +1,11 @@
-package com.bifos.fospay
+package com.bifos.fospay.membership
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
 @SpringBootApplication
-class FospayApplication
+class MembershipApplication
 
 fun main(args: Array<String>) {
-    runApplication<FospayApplication>(*args)
+    runApplication<MembershipApplication>(*args)
 }

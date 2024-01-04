@@ -7,7 +7,7 @@ plugins {
     kotlin("plugin.spring") version "1.9.21"
 }
 
-group = "com.bifos.fospay"
+group = "com.bifos.fospay.membership"
 version = "0.0.1-SNAPSHOT"
 
 java {
@@ -35,6 +35,7 @@ dependencies {
 
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+    implementation(kotlin("stdlib-jdk8"))
 }
 
 tasks.withType<KotlinCompile> {
@@ -46,4 +47,8 @@ tasks.withType<KotlinCompile> {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+kotlin {
+    jvmToolchain(17)
 }

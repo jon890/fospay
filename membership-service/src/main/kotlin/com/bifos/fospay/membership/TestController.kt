@@ -1,4 +1,4 @@
-package com.bifos.fospay
+package com.bifos.fospay.membership
 
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RestController
