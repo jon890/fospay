@@ -4,7 +4,7 @@ import com.bifos.fospay.membership.application.port.`in`.RegisterMembershipComma
 import com.bifos.fospay.membership.application.port.`in`.RegisterMembershipUseCase
 import common.WebAdapter
 import org.slf4j.LoggerFactory
-import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
@@ -18,7 +18,7 @@ class RegisterMembershipController(
     private val logger = LoggerFactory.getLogger(this::class.java)
 
     @PostMapping("/membership/register")
-    fun registerMembership(@RequestBody requestBody: RegisterMembershipRequest): String {
+    fun registerMembership(@RequestBody requestBody: RegisterMembershipRequest): ResponseEntity<*> {
         // request~~
         // request => Command
         // Usecase ~~ (request x, command)
@@ -30,8 +30,8 @@ class RegisterMembershipController(
             isCorp = requestBody.isCorp
         )
 
-        registerMembershipUseCase.registerMembership(command)
+        val membership = registerMembershipUseCase.registerMembership(command)
 
-        return "register"
+        return ResponseEntity.ok().body(membership)
     }
 }
