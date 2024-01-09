@@ -14,3 +14,4 @@ pluginManagement {
 
 rootProject.name = "fospay"
 include("membership-service")
+include("common")

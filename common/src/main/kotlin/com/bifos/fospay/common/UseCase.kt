@@ -1,4 +1,4 @@
-package common
+package com.bifos.fospay.common
 
 import org.springframework.core.annotation.AliasFor
 import org.springframework.stereotype.Component

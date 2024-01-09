@@ -1,4 +1,4 @@
-package common
+package com.bifos.fospay.common
 
 import jakarta.validation.ConstraintViolationException
 import jakarta.validation.Validation

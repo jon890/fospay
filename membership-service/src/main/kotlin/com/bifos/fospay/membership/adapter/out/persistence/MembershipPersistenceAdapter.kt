@@ -1,10 +1,10 @@
 package com.bifos.fospay.membership.adapter.out.persistence
 
+import com.bifos.fospay.common.PersistenceAdapter
 import com.bifos.fospay.membership.application.port.out.FindMembershipPort
 import com.bifos.fospay.membership.application.port.out.ModifyMembershipPort
 import com.bifos.fospay.membership.application.port.out.RegisterMembershipPort
 import com.bifos.fospay.membership.domain.Membership
-import common.PersistenceAdapter
 import jakarta.persistence.EntityNotFoundException
 import org.springframework.data.repository.findByIdOrNull
 

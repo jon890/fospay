@@ -1,6 +1,6 @@
 package com.bifos.fospay.membership.application.port.`in`
 
-import common.SelfValidating
+import com.bifos.fospay.common.SelfValidating
 import jakarta.validation.constraints.NotNull
 
 data class FindMembershipCommand(

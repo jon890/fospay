@@ -1,8 +1,8 @@
 package com.bifos.fospay.membership.adapter.`in`.web
 
+import com.bifos.fospay.common.WebAdapter
 import com.bifos.fospay.membership.application.port.`in`.RegisterMembershipCommand
 import com.bifos.fospay.membership.application.port.`in`.RegisterMembershipUseCase
-import common.WebAdapter
 import org.slf4j.LoggerFactory
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
