@@ -7,6 +7,8 @@ plugins {
     kotlin("jvm")
     kotlin("plugin.spring")
     kotlin("plugin.jpa")
+
+    id("com.palantir.docker") version "0.35.0"
 }
 
 allOpen {
@@ -20,7 +22,7 @@ noArg {
 }
 
 group = "com.bifos.fospay.membership"
-version = "0.0.1-SNAPSHOT"
+version = "1.0.0"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_17
@@ -43,7 +45,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 
-    implementation("com.h2database:h2:2.2.224")
+    implementation("com.mysql:mysql-connector-j:8.2.0")
 
     val springDocVersion = "2.3.0"
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:${springDocVersion}")
@@ -68,4 +70,12 @@ tasks.withType<KotlinCompile> {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+docker {
+    println(tasks.bootJar.get().outputs.files)
+    name = rootProject.name + "-" + project.name + ":" + version
+    setDockerfile(file("./Dockerfile"))
+    files(tasks.bootJar.get().outputs.files)
+    buildArgs(mapOf("JAR_FILE" to tasks.bootJar.get().outputs.files.singleFile.name))
 }
