@@ -10,15 +10,15 @@ class MembershipJpaEntity(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
 
-    val name: String,
+    var name: String,
 
-    val email: String,
+    var email: String,
 
-    val address: String,
+    var address: String,
 
     var isValid: Boolean,
 
-    val isCorp: Boolean,
+    var isCorp: Boolean,
 ) {
 
     override fun toString(): String {

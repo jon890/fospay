@@ -5,25 +5,16 @@ import jakarta.validation.constraints.AssertTrue
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
 
-data class RegisterMembershipCommand(
+data class ModifyMembershipCommand(
     @get:NotNull
-    @get:NotBlank
+    val id: Long?,
+
     val name: String?,
-
-    @get:NotNull
-    @get:NotBlank
     val email: String?,
-
-    @get:NotNull
-    @get:NotBlank
     val address: String?,
-
-    @AssertTrue
-    val isValid: Boolean = true,
-
-    @get:NotNull
+    val isValid: Boolean?,
     val isCorp: Boolean?
-) : SelfValidating<RegisterMembershipCommand>() {
+) : SelfValidating<ModifyMembershipCommand>() {
 
     init {
         validateSelf()

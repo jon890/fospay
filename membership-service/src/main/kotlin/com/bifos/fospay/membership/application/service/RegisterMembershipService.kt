@@ -18,7 +18,7 @@ class RegisterMembershipService(
         val membershipJpaEntity = registerMembershipPort.createMembership(
             Membership.MembershipName(command.name!!),
             Membership.MembershipEmail(command.email!!),
-            Membership.MembershipAddress(command.address),
+            Membership.MembershipAddress(command.address!!),
             Membership.MembershipIsValid(command.isValid),
             Membership.MembershipIsCorp(command.isCorp!!),
         )

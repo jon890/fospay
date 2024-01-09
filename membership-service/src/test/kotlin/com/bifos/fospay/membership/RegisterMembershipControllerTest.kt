@@ -27,11 +27,11 @@ class RegisterMembershipControllerTest @Autowired constructor(
 
         val memberShip = Membership.generate(
             Membership.MembershipId(1),
-            Membership.MembershipName(request.name),
-            Membership.MembershipEmail(request.email),
-            Membership.MembershipAddress(request.address),
+            Membership.MembershipName(request.name!!),
+            Membership.MembershipEmail(request.email!!),
+            Membership.MembershipAddress(request.address!!),
             Membership.MembershipIsValid(true),
-            Membership.MembershipIsCorp(request.isCorp),
+            Membership.MembershipIsCorp(request.isCorp!!),
         )
 
         mockMvc.perform(
