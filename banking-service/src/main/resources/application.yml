@@ -1,0 +1,23 @@
+server:
+  port: 18081
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:13306/fospay
+    username: mysqluser
+    password: mysqlpw
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+springdoc:
+  version: '@springdoc.version@'
+  swagger-ui:
+    display-request-duration: true
+    groups-order: desc
+    operations-sorter: method
+    disable-swagger-default-url: true
+    use-root-path: true
+  show-actuator: true

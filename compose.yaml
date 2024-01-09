@@ -70,6 +70,18 @@ services:
     environment:
       - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/fospay?useSSL=false&allowPublicKeyRetrieval=true
 
+  banking-service:
+    image: fospay-banking-service:1.0.0
+    networks:
+      - fospay_network
+    ports:
+      - 18081:18081
+    depends_on:
+      - mysql
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/fospay?useSSL=false&allowPublicKeyRetrieval=true
+
+
 networks:
   fospay_network:
     driver: bridge

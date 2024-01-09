@@ -8,8 +8,8 @@ plugins {
 }
 
 
-group = "com.bifos.fospay.membership"
-version = "0.0.1-SNAPSHOT"
+group = "com.bifos.fospay.common"
+version = "1.0.0"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_17
