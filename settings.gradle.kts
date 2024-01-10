@@ -16,3 +16,4 @@ rootProject.name = "fospay"
 include("membership-service")
 include("common")
 include("banking-service")
+include("money-service")

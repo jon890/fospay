@@ -81,6 +81,16 @@ services:
     environment:
       - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/fospay?useSSL=false&allowPublicKeyRetrieval=true
 
+  money-service:
+    image: fospay-money-service:1.0.0
+    networks:
+      - fospay_network
+    ports:
+      - 18082:18082
+    depends_on:
+      - mysql
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/fospay?useSSL=false&allowPublicKeyRetrieval=true
 
 networks:
   fospay_network:
