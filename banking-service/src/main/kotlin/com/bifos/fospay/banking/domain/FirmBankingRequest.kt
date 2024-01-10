@@ -1,24 +1,27 @@
 package com.bifos.fospay.banking.domain
 
-// 오염 되면 안되는 클래스, 고객 정보, 핵심 도메인
+import java.util.*
+
 class FirmBankingRequest private constructor(
-    val id: String,
+    val id: Long,
     val fromBankName: String,
     val fromBankAccount: String,
     val toBankName: String,
     val toBankAccount: String,
     val moneyAmount: Int,
-    val firmBankingStatus: String // 0: 요청, 1: 완료, 2: 실패
+    val firmBankingStatus: String, // 0: 요청, 1: 완료, 2: 실패
+    val uuid: UUID
 ) {
     companion object {
         fun generate(
-            id: String,
+            id: Long,
             fromBankName: String,
             fromBankAccount: String,
             toBankName: String,
             toBankAccount: String,
             moneyAmount: Int,
-            firmBankingStatus: String = "0"
+            firmBankingStatus: String = "0",
+            uuid: UUID
         ): FirmBankingRequest {
             return FirmBankingRequest(
                 id,
@@ -27,7 +30,8 @@ class FirmBankingRequest private constructor(
                 toBankName,
                 toBankAccount,
                 moneyAmount,
-                firmBankingStatus
+                firmBankingStatus,
+                uuid
             )
         }
     }
