@@ -7,4 +7,6 @@ import com.bifos.fospay.money.domain.MoneyChangingRequest
 interface IncreaseMoneyRequestUseCase {
 
     fun increaseMoney(command: IncreaseMoneyRequestCommand): MoneyChangingRequest
+
+    fun increaseMoneyAsync(command: IncreaseMoneyRequestCommand) : MoneyChangingRequest?
 }

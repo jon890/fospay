@@ -27,3 +27,7 @@ kafka:
     bootsrapservers: localhost:9092
 logging:
   topic: fospay.logging.out.stdout
+
+service:
+  membership:
+    url: localhost:8080

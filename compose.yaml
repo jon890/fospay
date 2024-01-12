@@ -83,6 +83,7 @@ services:
     environment:
       - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/fospay?useSSL=false&allowPublicKeyRetrieval=true
       - KAFKA_CLUSTERS_BOOTSTRAPSERVERS=kafka:9093
+      - SERVICE_MEMBERSHIP_URL=http://membership-service:18080
 
   money-service:
     image: fospay-money-service:1.0.0
@@ -94,14 +95,27 @@ services:
       - mysql
     environment:
       - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/fospay?useSSL=false&allowPublicKeyRetrieval=true
+      - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:9093
       - KAFKA_CLUSTERS_BOOTSTRAPSERVERS=kafka:9093
-
+      - SERVICE_MEMBERSHIP_URL=http://membership-service:18080
   logging-consumer:
     image: fospay-logging-consumer:1.0.0
     networks:
       - fospay_network
-#    ports:
-#      - 18082:18082
+    #    ports:
+    #      - 18082:18082
+    depends_on:
+      - kafka
+      - zookeeper
+    environment:
+      - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:9093
+
+  task-producer:
+    image: fospay-task-consumer:1.0.0
+    networks:
+      - fospay_network
+    #    ports:
+    #      - 18082:18082
     depends_on:
       - kafka
       - zookeeper

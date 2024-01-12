@@ -21,7 +21,7 @@ noArg {
     annotation("jakarta.persistence.MappedSuperclass")
 }
 
-group = "com.bifos.fospay.banking"
+group = "com.bifos.fospay.task-consumer"
 version = "1.0.0"
 
 java {
@@ -40,21 +40,12 @@ repositories {
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter")
+    implementation("org.springframework.boot:spring-boot-starter-web") // for jacskon
     implementation("org.jetbrains.kotlin:kotlin-reflect")
-    implementation("org.springframework.boot:spring-boot-starter-web")
-    implementation("org.springframework.boot:spring-boot-starter-validation")
-    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-    implementation("org.springframework.kafka:spring-kafka")
-
-    implementation("com.mysql:mysql-connector-j:8.2.0")
-
-    val springDocVersion = "2.3.0"
-    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:${springDocVersion}")
-    implementation("org.springdoc:springdoc-openapi-starter-webmvc-api:${springDocVersion}")
-    implementation("org.springdoc:springdoc-openapi-starter-common:${springDocVersion}")
 
     developmentOnly("org.springframework.boot:spring-boot-devtools")
 //    developmentOnly("org.springframework.boot:spring-boot-docker-compose")
+    implementation("org.springframework.kafka:spring-kafka")
 
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
     testImplementation("org.springframework.boot:spring-boot-starter-test")

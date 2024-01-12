@@ -1,0 +1,14 @@
+logging:
+  topic: fospay.logging.out.stdout
+
+task:
+  topic: fospay.task.topic
+  result:
+    topic:
+      fospay.task.result.topic
+
+spring:
+  kafka:
+    consumer:
+      auto-offset-reset: earliest
+    bootstrap-servers: localhost:9092

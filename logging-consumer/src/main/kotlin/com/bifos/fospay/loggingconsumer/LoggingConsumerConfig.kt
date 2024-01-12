@@ -9,7 +9,7 @@ import org.springframework.kafka.annotation.KafkaListener
 import org.springframework.kafka.config.TopicBuilder
 
 @Configuration
-class ConsumerConfig(
+class LoggingConsumerConfig(
     @Value("\${logging.topic}")
     val topic: String
 ) {
