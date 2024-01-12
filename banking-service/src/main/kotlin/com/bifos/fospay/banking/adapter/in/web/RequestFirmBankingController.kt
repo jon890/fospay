@@ -18,7 +18,7 @@ class RequestFirmBankingController(
     private val logger = LoggerFactory.getLogger(this::class.java)
 
     @PostMapping("/banking/firmbanking/request")
-    fun registerBankAccount(@RequestBody requestBody: RequestFirmBankingRequest): ResponseEntity<*> {
+    fun requestFirmBanking(@RequestBody requestBody: RequestFirmBankingRequest): ResponseEntity<*> {
         val command = RequestFirmBankingCommand(
             fromBankName = requestBody.fromBankName,
             fromBankAccountNumber = requestBody.fromBankAccountNumber,

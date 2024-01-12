@@ -21,3 +21,9 @@ springdoc:
     disable-swagger-default-url: true
     use-root-path: true
   show-actuator: true
+
+kafka:
+  clusters:
+    bootsrapservers: localhost:9092
+logging:
+  topic: fospay.logging.out.stdout
