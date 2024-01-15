@@ -29,6 +29,6 @@ class TaskResultProducer(
 
     fun sendTaskResult(key: String, task: Any) {
         val jsonStringToProduce = objectMapper.writeValueAsString(task)
-        kafkaTemplate.send(key, topic, jsonStringToProduce)
+        kafkaTemplate.send(topic, key, jsonStringToProduce)
     }
 }

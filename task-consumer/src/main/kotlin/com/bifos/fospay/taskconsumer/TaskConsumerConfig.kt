@@ -38,7 +38,7 @@ class TaskConsumerConfig(
         // task run
         for (subTask in task.subTasks) {
             // what subtask, membership, banking
-            // external port, adapter
+            // TODO external port, adapter
 
             // all subtask is done. true
             subTask.status = "success"

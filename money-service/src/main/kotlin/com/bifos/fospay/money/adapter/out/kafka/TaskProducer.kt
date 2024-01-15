@@ -31,9 +31,9 @@ class TaskProducer(
             .build()
     }
 
-    fun sendMessage(key: String, task: RechargingMoneyTask) {
+    private fun sendMessage(key: String, task: RechargingMoneyTask) {
         val jsonStringToProduce = objectMapper.writeValueAsString(task)
-        kafkaTemplate.send(key, topic, jsonStringToProduce)
+        kafkaTemplate.send(topic, key, jsonStringToProduce)
     }
 
 

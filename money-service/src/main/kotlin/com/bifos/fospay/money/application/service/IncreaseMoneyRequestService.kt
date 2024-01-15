@@ -77,17 +77,17 @@ class IncreaseMoneyRequestService(
         // Amount money Firmbanking --> 무조건 ok 받았다고 가정.
         val validBankingAccountTask = SubTask(
             membershipId = command.targetMembershipId,
-            subTaskName = "validMemberTask: 멤버십 유효성 검사",
-            taskType = "membership",
+            subTaskName = "validBankingAccountTask : 뱅킹 계좌 유효성 검사",
+            taskType = "banking",
             status = "ready"
         )
 
         val task = RechargingMoneyTask(
             taskId = UUID.randomUUID().toString(),
             taskName = "Increase Money Task / 머니 충전 Task",
-            subTasks = listOf(validMemberTask, validMemberTask),
+            subTasks = listOf(validMemberTask, validBankingAccountTask),
             membershipId = command.targetMembershipId,
-            toBankName = "fosbank",
+            toBankName = "fosbank", // 법인 계좌
             toBankAccountNumber = "111-222-333",
             moneyAmount = command.amount
         )
@@ -96,6 +96,7 @@ class IncreaseMoneyRequestService(
         sendRechargingMoneyTaskPort.sendRechargingMoneyTaskPort(task)
 
         // 3. Wait
+        countDownLatchManager.addCountDownLatch(task.taskId)
         countDownLatchManager.getCountDownLatch(task.taskId)?.await()
 
         // 3-1. task-consumer
@@ -103,13 +104,17 @@ class IncreaseMoneyRequestService(
 
         // 4. Task Result Consume
         val result = countDownLatchManager.getDataForKey(task.taskId)
-        if (result == "success") {
-            // 4-1 Consume ok
-        } else if (result == "failed") {
-            // Consume fail
-            return null
-        } else {
-            return null
+        when (result) {
+            "success" -> {
+                // 4-1 Consume ok
+            }
+            "failed" -> {
+                // Consume fail
+                return null
+            }
+            else -> {
+                return null
+            }
         }
 
         // 5. Consume ok, Logic

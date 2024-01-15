@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController
 
 @WebAdapter
 @RestController
-class RegisterBankAccountController(
+class RequestMoneyChangingController(
     private val increaseMoneyRequestUseCase: IncreaseMoneyRequestUseCase,
     private val moneyChangingResultDetailMapper: MoneyChangingResultDetailMapper
 ) {
@@ -27,7 +27,21 @@ class RegisterBankAccountController(
 
         val moneyChangingRequest = increaseMoneyRequestUseCase.increaseMoney(command)
 
-        return ResponseEntity.ok().body(moneyChangingResultDetailMapper.mapToMoneyChangingResultDetail(moneyChangingRequest))
+        return ResponseEntity.ok()
+            .body(moneyChangingResultDetailMapper.mapToMoneyChangingResultDetail(moneyChangingRequest))
+    }
+
+    @PostMapping("/money/increase-async")
+    fun increaseMoneyChangingRequestAsync(@RequestBody requestBody: IncreaseMoneyChangingRequest): ResponseEntity<*> {
+        val command = IncreaseMoneyRequestCommand(
+            targetMembershipId = requestBody.targetMembershipId,
+            amount = requestBody.amount
+        )
+
+        val moneyChangingRequest = increaseMoneyRequestUseCase.increaseMoneyAsync(command)
+
+        return ResponseEntity.ok()
+            .body(moneyChangingRequest?.let { moneyChangingResultDetailMapper.mapToMoneyChangingResultDetail(it) })
     }
 
 //    @PostMapping("/money/decrease")
