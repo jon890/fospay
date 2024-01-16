@@ -21,7 +21,7 @@ noArg {
     annotation("jakarta.persistence.MappedSuperclass")
 }
 
-group = "com.bifos.fospay.money"
+group = "com.bifos.fospay.remittance"
 version = "1.0.0"
 
 java {

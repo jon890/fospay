@@ -1,0 +1,43 @@
+server:
+  port: 18083
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:13306/fospay
+    username: mysqluser
+    password: mysqlpw
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+  kafka:
+    bootstrap-servers: localhost:9092
+
+springdoc:
+  version: '@springdoc.version@'
+  swagger-ui:
+    display-request-duration: true
+    groups-order: desc
+    operations-sorter: method
+    disable-swagger-default-url: true
+    use-root-path: true
+  show-actuator: true
+
+kafka:
+  clusters:
+    bootsrapservers: localhost:9092
+
+logging:
+  topic: fospay.logging.out.stdout
+
+task:
+  topic: fospay.task.topic
+  result:
+    topic:
+      fospay.task.result.topic
+
+service:
+  membership:
+    url: localhost:8080
