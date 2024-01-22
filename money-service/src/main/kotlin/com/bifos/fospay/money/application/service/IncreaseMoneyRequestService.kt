@@ -3,13 +3,16 @@ package com.bifos.fospay.money.application.service
 import com.bifos.fospay.common.CountDownLatchManager
 import com.bifos.fospay.common.RechargingMoneyTask
 import com.bifos.fospay.common.SubTask
+import com.bifos.fospay.money.adapter.axon.command.AxonCreateMemberMoneyCommand
+import com.bifos.fospay.money.adapter.axon.command.AxonIncreaseMoneyCommand
 import com.bifos.fospay.money.adapter.out.persistence.MoneyChangingRequestMapper
+import com.bifos.fospay.money.application.port.`in`.CreateMemberMoneyCommand
+import com.bifos.fospay.money.application.port.`in`.CreateMemberMoneyUseCase
 import com.bifos.fospay.money.application.port.`in`.IncreaseMoneyRequestCommand
 import com.bifos.fospay.money.application.port.`in`.IncreaseMoneyRequestUseCase
-import com.bifos.fospay.money.application.port.out.GetMembershipPort
-import com.bifos.fospay.money.application.port.out.IncreaseMoneyPort
-import com.bifos.fospay.money.application.port.out.SendRechargingMoneyTaskPort
+import com.bifos.fospay.money.application.port.out.*
 import com.bifos.fospay.money.domain.MoneyChangingRequest
+import org.axonframework.commandhandling.gateway.CommandGateway
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -22,8 +25,11 @@ class IncreaseMoneyRequestService(
     private val moneyChangingRequestMapper: MoneyChangingRequestMapper,
     private val getMembershipPort: GetMembershipPort,
     private val sendRechargingMoneyTaskPort: SendRechargingMoneyTaskPort,
-    private val countDownLatchManager: CountDownLatchManager
-) : IncreaseMoneyRequestUseCase {
+    private val countDownLatchManager: CountDownLatchManager,
+    private val commandGateway: CommandGateway,
+    private val createMemberMoneyPort: CreateMemberMoneyPort,
+    private val getMemberMoneyPort: GetMemberMoneyPort
+) : IncreaseMoneyRequestUseCase, CreateMemberMoneyUseCase {
 
     private val logger = LoggerFactory.getLogger(this::class.java)
 
@@ -108,10 +114,12 @@ class IncreaseMoneyRequestService(
             "success" -> {
                 // 4-1 Consume ok
             }
+
             "failed" -> {
                 // Consume fail
                 return null
             }
+
             else -> {
                 return null
             }
@@ -130,5 +138,33 @@ class IncreaseMoneyRequestService(
         )
 
         return moneyChangingRequestMapper.mapToDomainEntity(entity)
+    }
+
+    override fun createMemberMoney(command: CreateMemberMoneyCommand) {
+        val axonCommand = AxonCreateMemberMoneyCommand(command.membershipId)
+        commandGateway.send<String>(axonCommand).whenComplete { result, throwable ->
+            if (throwable != null) {
+                logger.error("Error occurred", throwable)
+                throw RuntimeException(throwable)
+            } else {
+                logger.info("result: {}", result)
+                createMemberMoneyPort.createMemberMoney(command.membershipId!!, result)
+            }
+        }
+    }
+
+    override fun increaseMoneyByEvent(command: IncreaseMoneyRequestCommand) {
+        val entity = getMemberMoneyPort.getMemberMoney(command.targetMembershipId!!)
+
+        val axonCommand = AxonIncreaseMoneyCommand(entity.aggregateIdentifier, entity.membershipId, command.amount)
+        commandGateway.send<String>(axonCommand).whenComplete { result, throwable ->
+            if (throwable != null) {
+                logger.error("Error occurred", throwable)
+                throw RuntimeException(throwable)
+            } else {
+                logger.info("result: {}", result)
+                increaseMoneyPort.increaseMoney(command.targetMembershipId, command.amount!!)
+            }
+        }
     }
 }

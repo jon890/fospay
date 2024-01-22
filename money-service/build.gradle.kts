@@ -46,6 +46,8 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.kafka:spring-kafka")
 
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+
     implementation("com.mysql:mysql-connector-j:8.2.0")
 
     val springDocVersion = "2.3.0"

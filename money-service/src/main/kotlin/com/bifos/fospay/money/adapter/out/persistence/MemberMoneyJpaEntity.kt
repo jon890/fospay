@@ -18,6 +18,8 @@ class MemberMoneyJpaEntity(
 
     var balance: Int,
 
+    var aggregateIdentifier: String? = null,
+
     @CreatedDate
     var createdAt: LocalDateTime? = null
 ) {
