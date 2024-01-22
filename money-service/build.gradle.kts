@@ -60,6 +60,11 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     implementation(kotlin("stdlib-jdk8"))
     implementation(project(path = ":common"))
+
+    implementation("org.axonframework:axon-bom:4.9.2")
+    implementation("org.axonframework:axon-spring-boot-starter:4.9.1")
+    testImplementation("org.axonframework:axon-test:4.9.1")
+
 }
 
 tasks.withType<KotlinCompile> {

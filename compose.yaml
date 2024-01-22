@@ -1,4 +1,17 @@
 services:
+  axon-server:
+    image: axoniq/axonserver:latest-jdk-17
+    networks:
+      - fospay_network
+    ports:
+      - "18024:8024"
+      - "18124:8124"
+    volumes:
+      - axonserver-data:/axonserver/data
+      - axonserver-events:/axonserver/events
+      - axonserver-config:/axonserver/config:ro
+      - axonserver-plugin:/axonserver/plugins
+
   zookeeper:
     image: zookeeper
     networks:
@@ -98,6 +111,7 @@ services:
       - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:9093
       - KAFKA_CLUSTERS_BOOTSTRAPSERVERS=kafka:9093
       - SERVICE_MEMBERSHIP_URL=http://membership-service:18080
+      - AXON_AXONSERVER_SERVERS=axon-server:8124
 
   logging-consumer:
     image: fospay-logging-consumer:1.0.0
@@ -137,8 +151,34 @@ services:
       - KAFKA_CLUSTERS_BOOTSTRAPSERVERS=kafka:9093
       - SERVICE_MEMBERSHIP_URL=http://membership-service:18080
       - SERVICE_BANKING_URL=http://banking-service:18081
-      - SERVICE_MONEY_URL=http://money -service:18082
+      - SERVICE_MONEY_URL=http://money-service:18082
 
 networks:
   fospay_network:
     driver: bridge
+
+volumes:
+  axonserver-data:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: ${PWD}/axon-server-se/data
+  axonserver-events:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: ${PWD}/axon-server-se/events
+  axonserver-config:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: ${PWD}/axon-server-se/config
+  axonserver-plugin:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: ${PWD}/axon-server-se/plugin

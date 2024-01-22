@@ -41,3 +41,11 @@ task:
 service:
   membership:
     url: localhost:8080
+
+axon:
+  axon_server:
+    servers: localhost:8124
+  serializer:
+    events: jackson
+    messages: jackson
+    general: xstream
