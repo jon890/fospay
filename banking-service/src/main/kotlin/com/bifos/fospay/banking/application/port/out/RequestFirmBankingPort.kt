@@ -12,10 +12,13 @@ interface RequestFirmBankingPort {
         toBankAccountNumber: String,
         moneyAmount: Int,
         firmBankingStatus: String,
-        uuid: UUID
+        uuid: UUID,
+        aggregateIdentifier: String?
     ): FirmBankingRequestJpaEntity
 
     fun modifyFirmBankingRequest(
         entity: FirmBankingRequestJpaEntity
     ): FirmBankingRequestJpaEntity
+
+    fun getFirmBankingRequest(aggregateIdentifier: String) : FirmBankingRequestJpaEntity?
 }

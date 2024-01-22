@@ -23,6 +23,8 @@ class FirmBankingRequestJpaEntity(
 
     var firmBankingStatus: String,
 
-    val uuid: UUID
+    val uuid: UUID,
+
+    val aggregateIdentifier: String? = null
 ) {
 }

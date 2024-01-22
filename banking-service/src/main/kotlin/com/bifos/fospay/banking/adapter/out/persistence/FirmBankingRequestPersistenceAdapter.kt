@@ -16,7 +16,8 @@ class FirmBankingRequestPersistenceAdapter(
         toBankAccountNumber: String,
         moneyAmount: Int,
         firmBankingStatus: String,
-        uuid: UUID
+        uuid: UUID,
+        aggregateIdentifier: String?
     ): FirmBankingRequestJpaEntity {
         return firmBankingRequestRepository.save(
             FirmBankingRequestJpaEntity(
@@ -27,12 +28,17 @@ class FirmBankingRequestPersistenceAdapter(
                 toBankAccountNumber,
                 moneyAmount,
                 firmBankingStatus,
-                uuid
+                uuid,
+                aggregateIdentifier
             )
         )
     }
 
     override fun modifyFirmBankingRequest(entity: FirmBankingRequestJpaEntity): FirmBankingRequestJpaEntity {
         return firmBankingRequestRepository.save(entity)
+    }
+
+    override fun getFirmBankingRequest(aggregateIdentifier: String): FirmBankingRequestJpaEntity? {
+        return firmBankingRequestRepository.findByAggregateIdentifier(aggregateIdentifier)
     }
 }

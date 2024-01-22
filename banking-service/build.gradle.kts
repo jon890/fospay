@@ -45,6 +45,8 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+
     implementation("com.mysql:mysql-connector-j:8.2.0")
 
     val springDocVersion = "2.3.0"
@@ -54,6 +56,10 @@ dependencies {
 
     developmentOnly("org.springframework.boot:spring-boot-devtools")
 //    developmentOnly("org.springframework.boot:spring-boot-docker-compose")
+
+    implementation("org.axonframework:axon-bom:4.9.2")
+    implementation("org.axonframework:axon-spring-boot-starter:4.9.1")
+    testImplementation("org.axonframework:axon-test:4.9.1")
 
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
