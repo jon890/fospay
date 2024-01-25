@@ -31,6 +31,10 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter-aop")
     implementation("org.springframework.kafka:spring-kafka")
+
+    implementation("org.axonframework:axon-bom:4.9.2")
+    implementation("org.axonframework:axon-spring-boot-starter:4.9.1")
+    testImplementation("org.axonframework:axon-test:4.9.1")
 }
 
 tasks.withType<KotlinCompile> {

@@ -7,4 +7,6 @@ import com.bifos.fospay.banking.domain.RegisteredBankAccount
 interface RegisterBankAccountUseCase {
 
     fun registerBankAccount(command: RegisterBankAccountCommand): RegisteredBankAccount?
+
+    fun registerBankAccountByEvent(command: RegisterBankAccountCommand)
 }

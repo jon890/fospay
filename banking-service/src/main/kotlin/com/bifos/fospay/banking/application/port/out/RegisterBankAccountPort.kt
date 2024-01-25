@@ -6,9 +6,10 @@ import com.bifos.fospay.banking.domain.RegisteredBankAccount
 interface RegisterBankAccountPort {
 
     fun createRegisteredBankAccount(
-        membershipId: RegisteredBankAccount.MembershipId,
-        bankName: RegisteredBankAccount.BankName,
-        bankAccountNumber: RegisteredBankAccount.BankAccountNumber,
-        linkedStatusIsValid: RegisteredBankAccount.LinkedStatusIsValid
+        membershipId: Long,
+        bankName: String,
+        bankAccountNumber: String,
+        linkedStatusIsValid: Boolean,
+        aggregateIdentifier: String
     ): RegisteredBankAccountJpaEntity
 }

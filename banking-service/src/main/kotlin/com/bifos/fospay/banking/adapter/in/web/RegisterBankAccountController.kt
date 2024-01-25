@@ -30,4 +30,17 @@ class RegisterBankAccountController(
             ?: return ResponseEntity.badRequest().body(null)
         return ResponseEntity.ok().body(registeredBankAccount)
     }
+
+    @PostMapping("/banking/account/eda")
+    fun registerBankAccountByEvent(@RequestBody requestBody: RegisterBankAccountRequest): ResponseEntity<*> {
+        val command = RegisterBankAccountCommand(
+            membershipId = requestBody.membershipId,
+            bankName = requestBody.bankName,
+            bankAccountNumber = requestBody.bankAccountNumber,
+            linkedStatusIsValid = requestBody.linkedStatusIsValid
+        )
+
+        val registeredBankAccount = registerMembershipUseCase.registerBankAccountByEvent(command)
+        return ResponseEntity.ok().body(null)
+    }
 }

@@ -4,7 +4,7 @@ import com.bifos.fospay.common.CountDownLatchManager
 import com.bifos.fospay.common.RechargingMoneyTask
 import com.bifos.fospay.common.SubTask
 import com.bifos.fospay.money.adapter.axon.command.AxonCreateMemberMoneyCommand
-import com.bifos.fospay.money.adapter.axon.command.AxonIncreaseMoneyCommand
+import com.bifos.fospay.money.adapter.axon.command.RechargingMoneyRequestCreateCommand
 import com.bifos.fospay.money.adapter.out.persistence.MoneyChangingRequestMapper
 import com.bifos.fospay.money.application.port.`in`.CreateMemberMoneyCommand
 import com.bifos.fospay.money.application.port.`in`.CreateMemberMoneyUseCase
@@ -155,16 +155,37 @@ class IncreaseMoneyRequestService(
 
     override fun increaseMoneyByEvent(command: IncreaseMoneyRequestCommand) {
         val entity = getMemberMoneyPort.getMemberMoney(command.targetMembershipId!!)
+        val memberMoneyAggregateIdentifier = entity.aggregateIdentifier
 
-        val axonCommand = AxonIncreaseMoneyCommand(entity.aggregateIdentifier, entity.membershipId, command.amount)
-        commandGateway.send<String>(axonCommand).whenComplete { result, throwable ->
+        // Saga 의 시작을 나타내는 커맨드
+        //
+        commandGateway.send<String>(
+            RechargingMoneyRequestCreateCommand(
+                aggregateIdentifier = memberMoneyAggregateIdentifier!!,
+                rechargingRequestId = UUID.randomUUID().toString(),
+                membershipId = entity.membershipId,
+                amount = command.amount!!
+            )
+        ).whenComplete { result, throwable ->
             if (throwable != null) {
                 logger.error("Error occurred", throwable)
                 throw RuntimeException(throwable)
             } else {
                 logger.info("result: {}", result)
-                increaseMoneyPort.increaseMoney(command.targetMembershipId, command.amount!!)
+//                increaseMoneyPort.increaseMoney(command.targetMembershipId, command.amount!!)
             }
         }
+
+//
+//        val axonCommand = AxonIncreaseMoneyCommand(entity.aggregateIdentifier, entity.membershipId, command.amount)
+//        commandGateway.send<String>(axonCommand).whenComplete { result, throwable ->
+//            if (throwable != null) {
+//                logger.error("Error occurred", throwable)
+//                throw RuntimeException(throwable)
+//            } else {
+//                logger.info("result: {}", result)
+//                increaseMoneyPort.increaseMoney(command.targetMembershipId, command.amount!!)
+//            }
+//        }
     }
 }

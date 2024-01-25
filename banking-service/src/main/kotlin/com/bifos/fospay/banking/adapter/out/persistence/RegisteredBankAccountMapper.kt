@@ -8,11 +8,12 @@ class RegisteredBankAccountMapper {
 
     fun mapToDomainEntity(registeredBankAccountJpaEntity: RegisteredBankAccountJpaEntity): RegisteredBankAccount {
         return RegisteredBankAccount.generate(
-            RegisteredBankAccount.RegisteredBankAccountId(registeredBankAccountJpaEntity.id!!),
-            RegisteredBankAccount.MembershipId(registeredBankAccountJpaEntity.membershipId),
-            RegisteredBankAccount.BankName(registeredBankAccountJpaEntity.bankName),
-            RegisteredBankAccount.BankAccountNumber(registeredBankAccountJpaEntity.bankAccountNumber),
-            RegisteredBankAccount.LinkedStatusIsValid(registeredBankAccountJpaEntity.linkedStatusIsValid),
+            registeredBankAccountJpaEntity.id!!,
+            registeredBankAccountJpaEntity.membershipId,
+            registeredBankAccountJpaEntity.bankName,
+            registeredBankAccountJpaEntity.bankAccountNumber,
+            registeredBankAccountJpaEntity.linkedStatusIsValid,
+            registeredBankAccountJpaEntity.aggregateIdentifier
         )
     }
 }

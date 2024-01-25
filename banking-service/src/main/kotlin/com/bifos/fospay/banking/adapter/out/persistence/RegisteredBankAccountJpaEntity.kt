@@ -16,6 +16,8 @@ class RegisteredBankAccountJpaEntity(
 
     val bankAccountNumber: String,
 
-    var linkedStatusIsValid: Boolean
+    var linkedStatusIsValid: Boolean,
+
+    val aggregateIdentifier: String
 ) {
 }

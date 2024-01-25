@@ -6,43 +6,26 @@ class RegisteredBankAccount private constructor(
     val membershipId: Long,
     val bankName: String,
     val bankAccountNumber: String,
-    val linkedStatusIsValid: Boolean
+    val linkedStatusIsValid: Boolean,
+    val aggregateIdentifier: String
 ) {
     companion object {
         fun generate(
-            registeredBankAccountId: RegisteredBankAccountId,
-            membershipId: MembershipId,
-            bankName: BankName,
-            bankAccountNumber: BankAccountNumber,
-            linkedStatusIsValid: LinkedStatusIsValid
+            id: Long,
+            membershipId: Long,
+            bankName: String,
+            bankAccountNumber: String,
+            linkedStatusIsValid: Boolean,
+            aggregateIdentifier: String
         ): RegisteredBankAccount {
             return RegisteredBankAccount(
-                registeredBankAccountId.id,
-                membershipId.membershipId,
-                bankName.bankName,
-                bankAccountNumber.bankAccountNumber,
-                linkedStatusIsValid.linkedStatusIsValid
+                id,
+                membershipId,
+                bankName,
+                bankAccountNumber,
+                linkedStatusIsValid,
+                aggregateIdentifier
             )
         }
     }
-
-    class RegisteredBankAccountId(
-        val id: Long
-    )
-
-    class MembershipId(
-        val membershipId: Long
-    )
-
-    class BankName(
-        val bankName: String
-    )
-
-    class BankAccountNumber(
-        val bankAccountNumber: String
-    )
-
-    class LinkedStatusIsValid(
-        val linkedStatusIsValid: Boolean
-    )
 }

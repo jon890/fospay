@@ -2,8 +2,11 @@ package com.bifos.fospay.money.adapter.axon.agreegate
 
 import com.bifos.fospay.money.adapter.axon.command.AxonCreateMemberMoneyCommand
 import com.bifos.fospay.money.adapter.axon.command.AxonIncreaseMoneyCommand
+import com.bifos.fospay.money.adapter.axon.command.RechargingMoneyRequestCreateCommand
 import com.bifos.fospay.money.adapter.axon.event.AxonCreateMemberMoneyEvent
 import com.bifos.fospay.money.adapter.axon.event.AxonIncreaseMoneyEvent
+import com.bifos.fospay.money.adapter.axon.event.RechargingRequestCreatedEvent
+import com.bifos.fospay.money.application.port.out.GetRegisteredBankAccountPort
 import org.axonframework.commandhandling.CommandHandler
 import org.axonframework.eventsourcing.EventSourcingHandler
 import org.axonframework.modelling.command.AggregateIdentifier
@@ -60,5 +63,28 @@ class MemberMoneyAggregate {
         id = event.aggregateIdentifier
         membershipId = event.targetMembershipId
         balance = event.amount
+    }
+
+    @CommandHandler
+    fun startSaga(command: RechargingMoneyRequestCreateCommand, port: GetRegisteredBankAccountPort) {
+        logger.info("RechargingMoneyRequestCreateCommand")
+
+        id = command.aggregateIdentifier
+
+        // banking 정보가 필요해요 -> bank svc (get RegisteredBankAccount) 를 위한 Port
+        val aggregateIdentifier = port.getRegisteredBankAccount(command.membershipId)
+
+        // Saga Start
+        // new RechargingRequestCreatedEvent
+        AggregateLifecycle.apply(
+            RechargingRequestCreatedEvent(
+                registeredBankAccountAggregateIdentifier = aggregateIdentifier.aggregateIdentifier,
+                bankName = aggregateIdentifier.bankName,
+                bankAccountNumber = aggregateIdentifier.bankAccountNumber,
+                requestId = command.rechargingRequestId,
+                membershipId = aggregateIdentifier.membershipId,
+                amount = command.amount
+            )
+        )
     }
 }

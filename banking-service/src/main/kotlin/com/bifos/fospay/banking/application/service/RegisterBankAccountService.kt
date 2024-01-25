@@ -1,13 +1,18 @@
 package com.bifos.fospay.banking.application.service
 
+import com.bifos.fospay.banking.adapter.axon.command.CreateRegisteredBankAccountCommand
 import com.bifos.fospay.banking.adapter.out.external.bank.GetBankAccountRequest
 import com.bifos.fospay.banking.adapter.out.persistence.RegisteredBankAccountMapper
+import com.bifos.fospay.banking.application.port.`in`.GetRegisteredBankAccountCommand
+import com.bifos.fospay.banking.application.port.`in`.GetRegisteredBankAccountUseCase
 import com.bifos.fospay.banking.application.port.`in`.RegisterBankAccountCommand
 import com.bifos.fospay.banking.application.port.`in`.RegisterBankAccountUseCase
 import com.bifos.fospay.banking.application.port.out.GetMembershipPort
+import com.bifos.fospay.banking.application.port.out.GetRegisteredBankAccountPort
 import com.bifos.fospay.banking.application.port.out.RegisterBankAccountPort
 import com.bifos.fospay.banking.application.port.out.RequestBankAccountInfoPort
 import com.bifos.fospay.banking.domain.RegisteredBankAccount
+import org.axonframework.commandhandling.gateway.CommandGateway
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -17,8 +22,10 @@ class RegisterBankAccountService(
     private val registerBankAccountPort: RegisterBankAccountPort,
     private val registeredBankAccountMapper: RegisteredBankAccountMapper,
     private val requestBankAccountInfoPort: RequestBankAccountInfoPort,
-    private val getMembershipPort: GetMembershipPort
-) : RegisterBankAccountUseCase {
+    private val getMembershipPort: GetMembershipPort,
+    private val commandGateway: CommandGateway,
+    private val getRegisteredBankAccountPort: GetRegisteredBankAccountPort
+) : RegisterBankAccountUseCase, GetRegisteredBankAccountUseCase {
 
     override fun registerBankAccount(command: RegisterBankAccountCommand): RegisteredBankAccount? {
         // 은행 계좌를 등록해야하는 서비스
@@ -35,7 +42,12 @@ class RegisterBankAccountService(
         // Port -> Adapter -> External System
         // Port
         // 실제 외부의 은행계좌를 정보를 Get
-        val accountInfo = requestBankAccountInfoPort.getBankAccountInfo(GetBankAccountRequest(command.bankName!!, command.bankAccountNumber!!))
+        val accountInfo = requestBankAccountInfoPort.getBankAccountInfo(
+            GetBankAccountRequest(
+                command.bankName!!,
+                command.bankAccountNumber!!
+            )
+        )
         if (!accountInfo.isValid) {
             return null
         }
@@ -43,12 +55,41 @@ class RegisterBankAccountService(
         // 2. 등록가능한 계좌라면, 등록한다. 성공하면, 등록에 성공한 등록 정보를 리턴
         // 2-1. 등록가능하지 않은 계좌라면. 에러를 리턴
         val membershipJpaEntity = registerBankAccountPort.createRegisteredBankAccount(
-            RegisteredBankAccount.MembershipId(command.membershipId),
-            RegisteredBankAccount.BankName(command.bankName),
-            RegisteredBankAccount.BankAccountNumber(command.bankAccountNumber),
-            RegisteredBankAccount.LinkedStatusIsValid(command.linkedStatusIsValid!!),
+            command.membershipId,
+            command.bankName,
+            command.bankAccountNumber,
+            command.linkedStatusIsValid!!,
+            ""
         )
 
         return registeredBankAccountMapper.mapToDomainEntity(membershipJpaEntity)
+    }
+
+    override fun registerBankAccountByEvent(command: RegisterBankAccountCommand) {
+        commandGateway.send<String>(
+            CreateRegisteredBankAccountCommand(
+                command.membershipId!!,
+                command.bankName!!,
+                command.bankAccountNumber!!
+            )
+        )
+            .whenComplete { result, throwable ->
+                if (throwable != null) {
+                    throwable.printStackTrace()
+                } else {
+                    registerBankAccountPort.createRegisteredBankAccount(
+                        command.membershipId,
+                        command.bankName,
+                        command.bankAccountNumber,
+                        command.linkedStatusIsValid!!,
+                        result
+                    )
+                }
+            }
+    }
+
+    override fun getRegisteredBankAccount(command: GetRegisteredBankAccountCommand): RegisteredBankAccount? {
+        val entity = getRegisteredBankAccountPort.getRegisteredBankAccount(command)
+        return entity?.let { registeredBankAccountMapper.mapToDomainEntity(it) }
     }
 }
