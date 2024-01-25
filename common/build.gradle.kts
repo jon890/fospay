@@ -33,8 +33,7 @@ dependencies {
     implementation("org.springframework.kafka:spring-kafka")
 
     implementation("org.axonframework:axon-bom:4.9.2")
-    implementation("org.axonframework:axon-spring-boot-starter:4.9.1")
-    testImplementation("org.axonframework:axon-test:4.9.1")
+    implementation("org.axonframework:axon-modelling:4.9.1")
 }
 
 tasks.withType<KotlinCompile> {
