@@ -155,6 +155,22 @@ services:
       - SERVICE_MONEY_URL=http://money-service:18082
       - AXON_AXONSERVER_SERVERS=axon-server:8124
 
+  payment-service:
+    image: fospay-payment-service:1.0.0
+    networks:
+      - fospay_network
+    ports:
+      - 18084:18084
+    depends_on:
+      - mysql
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/fospay?useSSL=false&allowPublicKeyRetrieval=true
+      - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:9093
+      - KAFKA_CLUSTERS_BOOTSTRAPSERVERS=kafka:9093
+      - SERVICE_MEMBERSHIP_URL=http://membership-service:18080
+      - SERVICE_BANKING_URL=http://banking-service:18081
+      - AXON_AXONSERVER_SERVERS=axon-server:8124
+
 networks:
   fospay_network:
     driver: bridge
