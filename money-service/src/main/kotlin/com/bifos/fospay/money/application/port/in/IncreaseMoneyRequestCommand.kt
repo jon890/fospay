@@ -10,7 +10,7 @@ data class IncreaseMoneyRequestCommand(
     val targetMembershipId: Long?,
 
     @get:NotNull
-    @get:Positive
+//    @get:Positive
     val amount: Int?
 
 ) : SelfValidating<IncreaseMoneyRequestCommand>() {

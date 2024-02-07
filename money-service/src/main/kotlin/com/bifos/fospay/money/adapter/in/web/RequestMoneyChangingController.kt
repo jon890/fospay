@@ -59,17 +59,18 @@ class RequestMoneyChangingController(
         return ResponseEntity.ok().body(null)
     }
 
-//    @PostMapping("/money/decrease")
-//    fun decreaseMoneyChangingRequest(@RequestBody requestBody: DecreaseMoneyChangingRequest): ResponseEntity<*> {
-//        val command = RegisterBankAccountCommand(
-//            membershipId = requestBody.membershipId,
-//            bankName = requestBody.bankName,
-//            bankAccountNumber = requestBody.bankAccountNumber,
-//            linkedStatusIsValid = requestBody.linkedStatusIsValid
-//        )
+    // todo 이후에 적절한 방식으로 고치기
+    @PostMapping("/money/decrease-eda")
+    fun decreaseMoneyChangingRequestEda(@RequestBody requestBody: IncreaseMoneyChangingRequest): ResponseEntity<*> {
+        val command = IncreaseMoneyRequestCommand(
+            targetMembershipId = requestBody.targetMembershipId,
+            amount = requestBody.amount?.times(-1)
+        )
 
-//        return ResponseEntity.ok().body(moneyChangingResultDetailMapper.mapToMoneyChangingResultDetail(moneyChangingRequest))
-//    }
+        val moneyChangingRequest = increaseMoneyRequestUseCase.increaseMoneyByEvent(command)
+
+        return ResponseEntity.ok().body(null)
+    }
 
     @PostMapping("/money/create-member-money")
     fun createMemberMoney(@RequestBody requestBody: CreateMemberMoneyRequest) {

@@ -11,6 +11,8 @@ services:
       - axonserver-events:/axonserver/events
       - axonserver-config:/axonserver/config:ro
       - axonserver-plugin:/axonserver/plugins
+    hostname: axonserver
+    container_name: axonserver
 
   zookeeper:
     image: zookeeper
